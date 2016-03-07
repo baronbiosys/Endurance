@@ -1,0 +1,39 @@
+<?php
+
+namespace Endurance\Metric;
+
+use Endurance\HeartRateZones;
+use Endurance\Metric;
+
+class MovingTimeMetric extends Metric
+{
+    public function calculate(array $points, HeartRateZones $zones, array $dependencies)
+    {
+        $movingTime = $dependencies['elapsedTime'];
+
+        $count = count($points);
+        if ($count > 0) {
+            $keys = array_keys($points);
+            for ($index = $keys[0] + 1; $index < $count; $index++) {
+                $interval = $points[$index]->getTimestamp() - $points[$index - 1]->getTimestamp();
+<<<<<<< HEAD
+                if ($interval > 10 || $points[$index]->getSpeed() <= 1) {
+                #if ($points[$index]->getSpeed() <= 1) {
+=======
+                if ($interval > 10 || ($points[$index]->getSpeed() != null && $points[$index]->getSpeed() <= 1)) {
+>>>>>>> 56829e54b6d49a07207fabe5f85e8036c7f25b06
+                    $movingTime -= $interval;
+                }
+            }
+        }
+
+        return $movingTime;
+    }
+
+    protected function loadDependencies()
+    {
+        return array(
+            'elapsedTime' => new ElapsedTimeMetric()
+        );
+    }
+}

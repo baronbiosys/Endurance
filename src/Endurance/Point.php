@@ -11,7 +11,8 @@ class Point
     public $longitude;
     public $speed;
     public $time;
-
+    public $cadence;
+    
     public function __construct()
     {
         $this->time = new \DateTime();
@@ -90,5 +91,14 @@ class Point
     public function getTimestamp()
     {
         return $this->time->getTimestamp();
+    }
+    
+    public function setCadence($cadence)
+    {
+        $this->cadence = (int) $cadence;
+    }
+    public function getCadence()
+    {
+        return $this->cadence;
     }
 }
