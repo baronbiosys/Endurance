@@ -43,21 +43,28 @@ class TCXParser extends Parser
         $activityNode = $xml->Activities->Activity[0];
         $activity->setStartTime(new \DateTime((string) $activityNode->Id));
         $activity->setSport((string) $xml->Activities->Activity[0]->attributes()['Sport']);
-
+        
         $laps = array();
         $calories = 0;
+        $time = 0;
+        $distance = 0;
         foreach ($activityNode->Lap as $lapNode) {
             $newLap = $this->parseLap($activity, $lapNode);
             $laps[] = $newLap;
-            $calories += $newLap->calories;
+            $calories += $newLap->getCalories();
+            $time += $newLap->getTotalTime();
+            $distance += $newLap->getDistance();
         }
 
         if (count($laps) > 1) {
             // Only set the laps if there is more than one
             $activity->setLaps($laps);
         }
+        
         $activity->setCalories($calories);
-
+        $activity->setTotalTime($time);
+        $activity->setTotalDistance($distance);
+        
         return $activity;
     }
 
@@ -79,8 +86,10 @@ class TCXParser extends Parser
             $this->parseTrack($activity, $track);
         }
         $calories = (isset($lapNode->Calories)) ? $lapNode->Calories : 0;
-
-        return new Lap($startIndex, count($activity->getPoints()) - 1, $calories);
+        $time = (isset($lapNode->TotalTimeSeconds)) ? $lapNode->TotalTimeSeconds : 0;
+        $distance = (isset($lapNode->DistanceMeters)) ? $lapNode->DistanceMeters : 0;
+        
+        return new Lap($startIndex, count($activity->getPoints()) - 1, $calories, $time, $distance);
     }
 
     protected function parseTrack(Activity $activity, $trackNode)
@@ -123,6 +132,11 @@ class TCXParser extends Parser
             $point->setCadence((int) $trackpointNode->Extensions->TPX->RunCadence);
         }
         
+        if (isset($trackpointNode->Watts)) {
+            $point->setWatts((int) $trackpointNode->Watts);
+        } elseif (isset($trackpointNode->Extensions->TPX->Watts)) {
+            $point->setWatts((int) $trackpointNode->Extensions->TPX->Watts);
+        }
         return $point;
     }
 }

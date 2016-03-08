@@ -10,8 +10,9 @@ class Point
     public $latitude;
     public $longitude;
     public $speed;
-    public $time;
+    public $timestamp;
     public $cadence;
+    public $watts;
     
     public function __construct()
     {
@@ -80,17 +81,17 @@ class Point
 
     public function setTime(\DateTime $time)
     {
-        $this->time = $time;
+        $this->timestamp = new \MongoDate($time->getTimestamp());
     }
 
     public function getTime()
     {
-        return $this->time;
+        return $this->timestamp;
     }
 
     public function getTimestamp()
     {
-        return $this->time->getTimestamp();
+        return $this->timestamp->sec;
     }
     
     public function setCadence($cadence)
@@ -100,5 +101,15 @@ class Point
     public function getCadence()
     {
         return $this->cadence;
+    }
+    
+    public function setWatts($watts) 
+    {
+        $this->power = (int) $watts;
+    }
+    
+    public function getWatts($watts)
+    {
+        return $this->power;
     }
 }

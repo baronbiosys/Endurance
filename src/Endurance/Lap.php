@@ -20,8 +20,10 @@ class Lap
 
 
     public $calories;
-
-    public function __construct($start = 0, $end = 0, $calories = 0)
+    public $totalTime;
+    public $distance;
+    
+    public function __construct($start = 0, $end = 0, $calories = 0, $time = 0, $distance = 0)
     {
         $this->setStart($start);
         $this->setEnd($end);
@@ -42,7 +44,27 @@ class Lap
     {
         return $this->calories;
     }
+    
+    public function setTotalTime($time)
+    {
+        $this->totalTime = (int) $time;
+    }
+        
+    public function getTotalTime() 
+    {
+        return $this->totalTime;
+    }
+    
+    public function setDistance($distance)
+    {
+        $this->distance = (int) $distance;
+    }
 
+    public function getDistance()
+    {
+        return $this->distance;
+    }
+    
     public function getStart()
     {
         return $this->start;

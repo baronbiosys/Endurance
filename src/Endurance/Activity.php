@@ -32,6 +32,15 @@ class Activity
      */
     protected $laps = array();
 
+    protected $totalTimeInSeconds;
+    protected $totalDistance;
+    protected $totalCalories;
+    protected $totalPower = 0;
+    protected $avgPower = 0;
+    protected $maxPower = 0;
+    protected $maxCadence;
+    protected $avgCadence;
+    
     public function setSport($sport)
     {
         $this->sport = $sport;
@@ -54,7 +63,32 @@ class Activity
 
     public function addPoint(Point $point)
     {
-        $this->points[] = $point;
+        if (!empty($point->cadence)) {
+                                    
+        }
+        
+        if (!empty($point->distance)) {
+            
+        }
+        
+        if (!empty($point->elevation)) {
+//            $elevation_gain += $value - $last_altitude;
+        }
+        
+        if (!empty($point->heartrate)) {
+            
+        }
+        
+        if (!empty($point->speed)) {
+            
+        }
+        
+        if (!empty($point->watts)) {
+            $this->totalPower += $point->watts;
+            $this->maxPower = max($this->maxPower, $point->watts);
+        }
+        
+        $this->points[] = (array) $point;        
     }
 
     public function setPoints(array $points)
@@ -90,12 +124,12 @@ class Activity
 
     public function setCalories($calories)
     {
-        $this->calories = $calories;
+        $this->totalCalories = $calories;
     }
 
     public function getCalories()
     {
-        return $this->calories;
+        return $this->totalCalories;
     }
 
     public function getLaps()
@@ -110,5 +144,20 @@ class Activity
             $data = array_combine($data,(array)$track);
         }
         return $data;
+    }
+    
+    public function setTotalTime($time) 
+    {
+        $this->totalTimeInSeconds = $time;
+    }
+    
+    public function getTotalTime() 
+    {
+        return $this->totalTimeInSeconds;
+    }
+    
+    public function setTotalDistance($distance) 
+    {
+        $this->totalDistance = (float) $distance;
     }
 }
