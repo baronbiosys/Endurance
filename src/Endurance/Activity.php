@@ -67,33 +67,33 @@ class Activity
 
     public function addPoint(Point $point)
     {
-        if (!empty($point->cadence)) {
-            $this->totalCadence += $point->cadence;
-            $this->maxCadence = max($this->maxCadence, $point->cadence);
+        if (!empty($point->getCadence())) {
+            $this->totalCadence += $point->getCadence();
+            $this->maxCadence = max($this->maxCadence, $point->getCadence());
         }
                 
-        if (!empty($point->elevation)) {
+        if (!empty($point->getElevation())) {
             $last_index = count($this->points) - 1;
             if ($last_index >= 0) {
                 $last_point = $this->points[$last_index];
-                if ($point->elevation > $last_point['elevation'])
-                    $this->totalElevationGain += $point->elevation - $last_point['elevation'];
+                if ($point->getElevation() > $last_point['elevation'])
+                    $this->totalElevationGain += $point->getElevation() - $last_point['elevation'];
             }
         }
         
-        if (!empty($point->heartrate)) {
-            $this->totalHeartRate += $point->heartrate;
-            $this->maxHeartRate = max($this->maxHeartRate, $point->heartrate);
+        if (!empty($point->getHeartRate())) {
+            $this->totalHeartRate += $point->getHeartRate();
+            $this->maxHeartRate = max($this->maxHeartRate, $point->getHeartRate());
         }
         
-        if (!empty($point->speed)) {
-            $this->totalSpeed += $point->speed;
-            $this->maxSpeed = max($this->maxSpeed, $point->speed);
+        if (!empty($point->getSpeed())) {
+            $this->totalSpeed += $point->getSpeed();
+            $this->maxSpeed = max($this->maxSpeed, $point->getSpeed());
         }
         
-        if (!empty($point->watts)) {
-            $this->totalPower += $point->watts;
-            $this->maxPower = max($this->maxPower, $point->watts);
+        if (!empty($point->getWatts())) {
+            $this->totalPower += $point->getWatts();
+            $this->maxPower = max($this->maxPower, $point->getWatts());
         }
         
         $this->points[] = (array) $point;        

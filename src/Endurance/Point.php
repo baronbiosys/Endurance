@@ -12,7 +12,7 @@ class Point
     protected $speed;
     protected $timestamp;
     protected $cadence;
-    protected $watts;
+    protected $power;
     
     public function __construct()
     {        
@@ -107,7 +107,7 @@ class Point
         $this->power = (int) $watts;
     }
     
-    public function getWatts($watts)
+    public function getWatts()
     {
         return $this->power;
     }
