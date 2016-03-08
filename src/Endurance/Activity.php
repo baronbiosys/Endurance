@@ -76,7 +76,7 @@ class Activity
             $last_index = count($this->points) - 1;
             if ($last_index >= 0) {
                 $last_point = $this->points[$last_index];
-                if ($point->getElevation() > $last_point['elevation'])
+                if (isset($last_point['elevation']) && $point->getElevation() > $last_point['elevation'])
                     $this->totalElevationGain += $point->getElevation() - $last_point['elevation'];
             }
         }
