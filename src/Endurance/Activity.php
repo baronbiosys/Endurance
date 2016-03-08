@@ -160,4 +160,9 @@ class Activity
     {
         $this->totalDistance = (float) $distance;
     }
+    
+    public function getTotalDistance($distance) 
+    {
+        $this->totalDistance = (float) $distance;
+    }
 }
