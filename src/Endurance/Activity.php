@@ -32,14 +32,18 @@ class Activity
      */
     protected $laps = array();
 
-    protected $totalTimeInSeconds;
-    protected $totalDistance;
-    protected $totalCalories;
+    protected $totalTimeInSeconds = 0;
+    protected $totalDistance = 0;
+    protected $totalCalories = 0;    
+    protected $totalElevationGain = 0;    
     protected $totalPower = 0;
-    protected $avgPower = 0;
     protected $maxPower = 0;
-    protected $maxCadence;
-    protected $avgCadence;
+    protected $totalCadence = 0;
+    protected $maxCadence = 0;    
+    protected $totalSpeed = 0;
+    protected $maxSpeed = 0;
+    protected $totalHeartRate = 0;
+    protected $maxHeartRate = 0;
     
     public function setSport($sport)
     {
@@ -64,23 +68,23 @@ class Activity
     public function addPoint(Point $point)
     {
         if (!empty($point->cadence)) {
-                                    
+            $this->totalCadence += $point->cadence;
+            $this->maxCadence = max($this->maxCadence, $point->cadence);
         }
-        
-        if (!empty($point->distance)) {
-            
-        }
-        
+                
         if (!empty($point->elevation)) {
-//            $elevation_gain += $value - $last_altitude;
+            $last_point = $this->points[count($this->points) - 1];
+            $this->totalElevationGain += $point->elevation - $last_point['elevation'];
         }
         
         if (!empty($point->heartrate)) {
-            
+            $this->totalHeartRate += $point->heartrate;
+            $this->maxHeartRate = max($this->maxHeartRate, $point->heartrate);
         }
         
         if (!empty($point->speed)) {
-            
+            $this->totalSpeed += $point->speed;
+            $this->maxSpeed = max($this->maxSpeed, $point->speed);
         }
         
         if (!empty($point->watts)) {
@@ -161,8 +165,77 @@ class Activity
         $this->totalDistance = (float) $distance;
     }
     
-    public function getTotalDistance($distance) 
+    public function getTotalDistance() 
     {
-        $this->totalDistance = (float) $distance;
+        return $this->totalDistance;
+    }
+    
+    public function getMaxPower() 
+    {
+        return $this->maxPower;       
+    }
+    
+    public function getAvgPower()
+    {
+        $avg = 0;
+        
+        if (count($this->points)) {
+            $avg = $this->totalPower / count($this->points);
+        }
+        
+        return $avg;
+    }
+    
+    public function getTotalElevationGain()
+    {
+        return $this->totalElevationGain;
+    }
+    
+    public function getMaxCadence()
+    {
+        return $this->maxCadence;       
+    }
+    
+    public function getAvgCadence()
+    {
+        $avg = 0;
+        
+        if (count($this->points)) {
+            $avg = $this->totalCadence / count($this->points);
+        }
+        
+        return $avg;
+    }
+    
+    public function getMaxSpeed()
+    {
+        return $this->maxSpeed;       
+    }
+    
+    public function getAvgSpeed()
+    {
+        $avg = 0;
+        
+        if (count($this->points)) {
+            $avg = $this->totalSpeed / count($this->points);
+        }
+        
+        return $avg;
+    }
+    
+    public function getMaxHeartRate()
+    {
+        return $this->maxHeartRate;       
+    }
+    
+    public function getAvgHeartRate()
+    {
+        $avg = 0;
+        
+        if (count($this->points)) {
+            $avg = $this->totalHeartRate / count($this->points);
+        }
+        
+        return $avg;
     }
 }
