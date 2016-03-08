@@ -114,8 +114,7 @@ class TCXParser extends Parser
         $point->setDistance((float) $trackpointNode->DistanceMeters);
         $point->setLatitude((float) $trackpointNode->Position->LatitudeDegrees);
         $point->setLongitude((float) $trackpointNode->Position->LongitudeDegrees);
-        $point->time = new \DateTime($trackpointNode->Time);
-        #$point->getTime()->modify((string) $trackpointNode->Time);
+        $point->setTime(new \DateTime($trackpointNode->Time));        
 
         if (isset($trackpointNode->HeartRateBpm->Value)) {
             $point->setHeartRate((int) $trackpointNode->HeartRateBpm->Value);

@@ -4,19 +4,18 @@ namespace Endurance;
 
 class Point
 {
-    public $elevation;
-    public $distance;
-    public $heartrate;
-    public $latitude;
-    public $longitude;
-    public $speed;
-    public $timestamp;
-    public $cadence;
-    public $watts;
+    protected $elevation;
+    protected $distance;
+    protected $heartrate;
+    protected $latitude;
+    protected $longitude;
+    protected $speed;
+    protected $timestamp;
+    protected $cadence;
+    protected $watts;
     
     public function __construct()
-    {
-        $this->time = new \DateTime();
+    {        
     }
 
     public function setElevation($elevation)
@@ -80,7 +79,7 @@ class Point
     }
 
     public function setTime(\DateTime $time)
-    {
+    {      
         $this->timestamp = new \MongoDate($time->getTimestamp());
     }
 
