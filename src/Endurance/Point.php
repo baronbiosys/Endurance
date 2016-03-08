@@ -4,15 +4,15 @@ namespace Endurance;
 
 class Point
 {
-    protected $elevation;
-    protected $distance;
-    protected $heartrate;
-    protected $latitude;
-    protected $longitude;
-    protected $speed;
-    protected $timestamp;
-    protected $cadence;
-    protected $power;
+    public $elevation;
+    public $distance;
+    public $heartrate;
+    public $latitude;
+    public $longitude;
+    public $speed;
+    public $timestamp;
+    public $cadence;
+    public $power;
     
     public function __construct()
     {        
