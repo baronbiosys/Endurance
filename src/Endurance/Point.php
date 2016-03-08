@@ -5,7 +5,7 @@ namespace Endurance;
 class Point
 {
     public $distance;
-    public $heartrate;
+    public $heart_rate;
     public $latitude;
     public $longitude;
     public $speed;
@@ -40,12 +40,12 @@ class Point
 
     public function setHeartRate($heartrate)
     {
-        $this->heartrate = (int) $heartrate;
+        $this->heart_rate = (int) $heartrate;
     }
 
     public function getHeartRate()
     {
-        return $this->heartrate;
+        return $this->heart_rate;
     }
 
     public function setLatitude($latitude)
