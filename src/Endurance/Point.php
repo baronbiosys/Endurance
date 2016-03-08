@@ -4,7 +4,6 @@ namespace Endurance;
 
 class Point
 {
-    public $elevation;
     public $distance;
     public $heartrate;
     public $latitude;
@@ -13,6 +12,7 @@ class Point
     public $timestamp;
     public $cadence;
     public $power;
+    public $altitude;
     
     public function __construct()
     {        
@@ -20,12 +20,12 @@ class Point
 
     public function setElevation($elevation)
     {
-        $this->elevation = (int) $elevation;
+        $this->altitude = (int) $elevation;
     }
 
     public function getElevation()
     {
-        return $this->elevation;
+        return $this->altitude;
     }
 
     public function setDistance($distance)
