@@ -73,8 +73,12 @@ class Activity
         }
                 
         if (!empty($point->elevation)) {
-            $last_point = $this->points[count($this->points) - 1];
-            $this->totalElevationGain += $point->elevation - $last_point['elevation'];
+            $last_index = count($this->points) - 1;
+            if ($last_index >= 0) {
+                $last_point = $this->points[$last_index];
+                if ($point->elevation > $last_point['elevation'])
+                    $this->totalElevationGain += $point->elevation - $last_point['elevation'];
+            }
         }
         
         if (!empty($point->heartrate)) {
