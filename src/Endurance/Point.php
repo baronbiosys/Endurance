@@ -4,15 +4,15 @@ namespace Endurance;
 
 class Point
 {
-    public $distance;
-    public $heart_rate;
-    public $latitude;
-    public $longitude;
-    public $speed;
-    public $timestamp;
-    public $cadence;
+    public $dist;
+    public $hr;
+    public $lat;
+    public $lng;
+    public $spd;
+    public $ts;
+    public $cad;
     public $power;
-    public $altitude;
+    public $alt;
     
     public function __construct()
     {        
@@ -20,86 +20,86 @@ class Point
 
     public function setElevation($elevation)
     {
-        $this->altitude = (int) $elevation;
+        $this->alt = (int) $elevation;
     }
 
     public function getElevation()
     {
-        return $this->altitude;
+        return $this->alt;
     }
 
     public function setDistance($distance)
     {
-        $this->distance = (float) $distance;
+        $this->dist = (float) $distance;
     }
 
     public function getDistance()
     {
-        return $this->distance;
+        return $this->dist;
     }
 
     public function setHeartRate($heartrate)
     {
-        $this->heart_rate = (int) $heartrate;
+        $this->hr = (int) $heartrate;
     }
 
     public function getHeartRate()
     {
-        return $this->heart_rate;
+        return $this->hr;
     }
 
     public function setLatitude($latitude)
     {
-        $this->latitude = (float) $latitude;
+        $this->lat = (float) $latitude;
     }
 
     public function getLatitude()
     {
-        return $this->latitude;
+        return $this->lat;
     }
 
     public function setLongitude($longitude)
     {
-        $this->longitude = (float) $longitude;
+        $this->lng = (float) $longitude;
     }
 
     public function getLongitude()
     {
-        return $this->longitude;
+        return $this->lng;
     }
 
     public function setSpeed($speed)
     {
-        $this->speed = (float) $speed;
+        $this->spd = (float) $speed;
     }
 
     public function getSpeed()
     {
-        return $this->speed;
+        return $this->spd;
     }
 
     public function setTime(\DateTime $time)
     {      
-        $this->timestamp = new \MongoDate($time->getTimestamp());
+        $this->ts = new \MongoDate($time->getTimestamp());
     }
 
     public function getTime()
     {
-        return $this->timestamp;
+        return $this->ts;
     }
 
     public function getTimestamp()
     {
-        return $this->timestamp->sec;
+        return $this->ts->sec;
     }
     
     public function setCadence($cadence)
     {
-        $this->cadence = (int) $cadence;
+        $this->cad = (int) $cadence;
     }
     public function getCadence()
     {
-        return $this->cadence;
+        return $this->cad;
     }
     
     public function setWatts($watts) 
