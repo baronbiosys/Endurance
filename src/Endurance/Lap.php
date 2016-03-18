@@ -27,6 +27,8 @@ class Lap
     {
         $this->setStart($start);
         $this->setEnd($end);
+        $this->setTotalTime($time);
+        $this->setDistance($distance);
         $this->setCalories($calories);
     }
 
