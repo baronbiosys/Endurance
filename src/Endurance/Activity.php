@@ -4,6 +4,8 @@ namespace Endurance;
 
 class Activity
 {
+    const ELEVATION_HYSTERESIS = 3;
+    
     /**
      * The sport of the activity
      *
@@ -35,7 +37,7 @@ class Activity
     protected $totalTimeInSeconds = 0;
     protected $totalDistance = 0;
     protected $totalCalories = 0;    
-    protected $totalElevationGain = 0;    
+    protected $totalElevationGain = null;    
     protected $totalPower = 0;
     protected $maxPower = 0;
     protected $totalCadence = 0;
@@ -73,11 +75,16 @@ class Activity
         }
                 
         if (!empty($point->getElevation())) {
-            $last_index = count($this->points) - 1;
-            if ($last_index >= 0) {
-                $last_point = $this->points[$last_index];
-                if (isset($last_point['altitude']) && $point->getElevation() > $last_point['altitude'])
-                    $this->totalElevationGain += $point->getElevation() - $last_point['altitude'];
+            if (!isset($this->previousAltitude)) {
+                $this->totalElevationGain = 0;
+                $this->previousAltitude = $point->getElevation();
+            }
+            else if ($point->getElevation() > $this->previousAltitude + self::ELEVATION_HYSTERESIS) {
+                $this->totalElevationGain += $point->getElevation() - $this->previousAltitude;
+                $this->previousAltitude = $point->getElevation();
+            }
+            else if ($point->getElevation() < $this->previousAltitude - self::ELEVATION_HYSTERESIS) {
+                $this->previousAltitude = $point->getElevation();
             }
         }
         
