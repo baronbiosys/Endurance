@@ -26,19 +26,18 @@ class TCXParser extends Parser
             throw new \Exception('Empty data to read');
         }
 
-        $xml = simplexml_load_from_string($data);
+        $xml = simplexml_load_string($data);
 
         return $this->parseData($xml);
     }
 
     private function parseData($xml)
     {
-        $activity = new Activity();
-
+        $activity = new Activity();        
         if (!isset($xml->Activities->Activity)) {
             throw new \Exception(sprintf('Unable to find an Activity', $file));
-        }
-
+        }        
+        
         // Just parse the first activity
         $activityNode = $xml->Activities->Activity[0];
         $activity->setStartTime(new \DateTime((string) $activityNode->Id));
@@ -103,39 +102,52 @@ class TCXParser extends Parser
     }
 
     protected function parseTrackpoint(\SimpleXMLElement $trackpointNode)
-    {
-        // Skip the point if lat/lng not found
-        if (!isset($trackpointNode->Position->LatitudeDegrees) || !isset($trackpointNode->Position->LongitudeDegrees)) {
-            #return;
-        }
-
+    {        
         $point = new Point();
-        $point->setElevation((float) $trackpointNode->AltitudeMeters);
-        $point->setDistance((float) $trackpointNode->DistanceMeters);
-        $point->setLatitude((float) $trackpointNode->Position->LatitudeDegrees);
-        $point->setLongitude((float) $trackpointNode->Position->LongitudeDegrees);
-        $point->setTime(new \DateTime($trackpointNode->Time));        
-
+        $point->setTime(new \DateTime($trackpointNode->Time));            
+        
+        if (isset($trackpointNode->AltitudeMeters))
+            $point->setElevation((float) $trackpointNode->AltitudeMeters);
+        
+        if (isset($trackpointNode->DistanceMeters))
+            $point->setDistance((float) $trackpointNode->DistanceMeters);
+        
+        if (isset($trackpointNode->Position->LatitudeDegrees, $trackpointNode->Position->LongitudeDegrees)) {
+            $point->setLatitude((float) $trackpointNode->Position->LatitudeDegrees);
+            $point->setLongitude((float) $trackpointNode->Position->LongitudeDegrees);
+        }
+                    
         if (isset($trackpointNode->HeartRateBpm->Value)) {
             $point->setHeartRate((int) $trackpointNode->HeartRateBpm->Value);
-        }
-
-        if (isset($trackpointNode->Extensions->TPX->Speed)) {
-            $point->setSpeed($this->convertSpeed((float) $trackpointNode->Extensions->TPX->Speed));
-        }
+        }        
         
         // can be at multiple places
         if (isset($trackpointNode->Cadence)) {
             $point->setCadence((int) $trackpointNode->Cadence);
-        } elseif (isset($trackpointNode->Extensions->TPX->RunCadence)) {
-            $point->setCadence((int) $trackpointNode->Extensions->TPX->RunCadence);
-        }
+        } else {
+            $result = $trackpointNode->xpath('.//*[local-name()="RunCadence"]');
+            if (!empty($result))                        
+                $point->setCadence((int) $result[0]);
+        }                
         
         if (isset($trackpointNode->Watts)) {
             $point->setWatts((int) $trackpointNode->Watts);
-        } elseif (isset($trackpointNode->Extensions->TPX->Watts)) {
-            $point->setWatts((int) $trackpointNode->Extensions->TPX->Watts);
+        } 
+        else {
+            $result = $trackpointNode->xpath('.//*[local-name()="Watts"]');
+            if (!empty($result))                        
+                $point->setWatts((int) $result[0]);
         }
+                
+        if (isset($trackpointNode->Extensions->TPX->Speed)) {
+            $point->setSpeed($this->convertSpeed((float) $trackpointNode->Extensions->TPX->Speed));
+        }
+        else {
+            $result = $trackpointNode->xpath('.//*[local-name()="Speed"]');
+            if (!empty($result))                        
+                $point->setSpeed((float) $result[0]);
+        }
+         
         return $point;
     }
 }
