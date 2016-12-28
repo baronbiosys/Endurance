@@ -1,6 +1,7 @@
 <?php
 
 namespace Endurance;
+use MongoDB\BSON\UTCDateTime as MongoDate;
 
 class Point
 {
@@ -80,7 +81,7 @@ class Point
 
     public function setTime(\DateTime $time)
     {      
-        $this->ts = new \MongoDate($time->getTimestamp());
+        $this->ts = new MongoDate($time->getTimestamp() * 1000);
     }
 
     public function getTime()

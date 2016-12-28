@@ -16,7 +16,10 @@ class TCXParser extends Parser
         }
 
         $xml = simplexml_load_file($file);
-
+        if (!isset($xml->Activities->Activity)) {
+            throw new \Exception(sprintf('Unable to find an Activity', $file));
+        }    
+        
         return $this->parseData($xml);
     }
 
@@ -33,10 +36,7 @@ class TCXParser extends Parser
 
     private function parseData($xml)
     {
-        $activity = new Activity();        
-        if (!isset($xml->Activities->Activity)) {
-            throw new \Exception(sprintf('Unable to find an Activity', $file));
-        }        
+        $activity = new Activity();                    
         
         // Just parse the first activity
         $activityNode = $xml->Activities->Activity[0];
