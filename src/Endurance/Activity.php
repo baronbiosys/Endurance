@@ -1,6 +1,7 @@
 <?php
 
 namespace Endurance;
+use Carbon\Carbon;
 
 class Activity
 {
@@ -57,7 +58,7 @@ class Activity
         return $this->sport;
     }
 
-    public function setStartTime(\DateTime $startTime)
+    public function setStartTime(Carbon $startTime)
     {
         $this->startTime = $startTime;
     }

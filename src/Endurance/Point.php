@@ -2,7 +2,8 @@
 
 namespace Endurance;
 // use MongoDB\BSON\UTCDateTime as MongoDate;
-use MongoDate;
+//use MongoDate;
+use Carbon\Carbon;
 
 class Point
 {
@@ -80,9 +81,10 @@ class Point
         return $this->spd;
     }
 
-    public function setTime(\DateTime $time)
+    public function setTime(Carbon $time)
     {      
-        $this->ts = new MongoDate($time->getTimestamp());
+        $this->ts = new Carbon;
+	$this->ts = $time;
        //$this->ts = new MongoDate($time->getTimestamp() * 1000);
     }
 
@@ -93,7 +95,7 @@ class Point
 
     public function getTimestamp()
     {
-        return $this->ts->sec;
+        return $this->ts->getTimestamp();
     }
     
     public function setCadence($cadence)

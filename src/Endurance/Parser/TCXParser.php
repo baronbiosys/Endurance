@@ -6,6 +6,7 @@ use Endurance\Activity;
 use Endurance\Lap;
 use Endurance\Parser;
 use Endurance\Point;
+use Carbon\Carbon;
 
 class TCXParser extends Parser
 {
@@ -40,7 +41,7 @@ class TCXParser extends Parser
         
         // Just parse the first activity
         $activityNode = $xml->Activities->Activity[0];
-        $activity->setStartTime(new \DateTime((string) $activityNode->Id));
+        $activity->setStartTime(new Carbon((string) $activityNode->Id));
         $activity->setSport((string) $xml->Activities->Activity[0]->attributes()['Sport']);
         
         $laps = array();
@@ -104,7 +105,7 @@ class TCXParser extends Parser
     protected function parseTrackpoint(\SimpleXMLElement $trackpointNode)
     {        
         $point = new Point();
-        $point->setTime(new \DateTime($trackpointNode->Time));            
+        $point->setTime(new Carbon($trackpointNode->Time));            
         
         if (isset($trackpointNode->AltitudeMeters))
             $point->setElevation((float) $trackpointNode->AltitudeMeters);
